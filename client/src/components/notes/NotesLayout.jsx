@@ -111,7 +111,10 @@ function NotesLayout({
             <NoteCard
               key={note.id}
               title={note.title || "Untitled note"}
-              preview={note.content.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim()}
+              preview={note.content
+                .replace(/<[^>]*>/g, " ")
+                .replace(/\s+/g, " ")
+                .trim()}
               category={note.category}
               date={note.date}
               listView={view === "list"}

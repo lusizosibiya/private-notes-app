@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Splash&display=swap");
 @import "tailwindcss";
 
-@theme {--font-splash: "Splash", cursive;}
+@theme {
+  --font-splash: "Splash", cursive;
+}

@@ -2,21 +2,34 @@ import { useState } from "react";
 import { FiLock, FiMail } from "react-icons/fi";
 import favicon from "../assets/images/favicon.png";
 import FormInput from "../components/authorisation/FormInput";
-import { rememberLoggedInUser } from "../utils/userProfile";
+import { apiRequest } from "../services/api";
 
 function Login() {
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+    setError("");
+    setLoading(true);
+
     const formData = new FormData(event.currentTarget);
 
-    if (!rememberLoggedInUser(formData.get("email"))) {
-      setError("No account found for this email on this device. Please sign up first.");
-      return;
-    }
+    const email = formData.get("email");
+    const password = formData.get("password");
 
-    window.location.assign("/");
+    try {
+      await apiRequest("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+
+      window.location.assign("/dashboard");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

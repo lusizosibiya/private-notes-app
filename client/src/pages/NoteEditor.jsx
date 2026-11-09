@@ -17,17 +17,19 @@ import {
   FiUnderline,
 } from "react-icons/fi";
 
-const categories = ["Personal", "Work", "Study", "Travel", "Reading", "Content"];
+const categories = [
+  "Personal",
+  "Work",
+  "Study",
+  "Travel",
+  "Reading",
+  "Content",
+];
 const EDITOR_SURFACE_COLOR = "#F5F2F1";
 
 function NumberedListIcon() {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      className="h-4 w-4"
-    >
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" className="h-4 w-4">
       <path
         d="M9 6h12M9 12h12M9 18h12"
         stroke="currentColor"
@@ -45,14 +47,102 @@ function NumberedListIcon() {
   );
 }
 const colorPalette = [
-  ["#000000", "#434343", "#666666", "#999999", "#B7B7B7", "#CCCCCC", "#D9D9D9", "#EFEFEF", "#F3F3F3", "#FFFFFF"],
-  ["#980000", "#FF0000", "#FF9900", "#FFFF00", "#00FF00", "#00FFFF", "#4A86E8", "#0000FF", "#9900FF", "#FF00FF"],
-  ["#E6B8AF", "#F4CCCC", "#FCE5CD", "#FFF2CC", "#D9EAD3", "#D0E0E3", "#C9DAF8", "#CFE2F3", "#D9D2E9", "#EAD1DC"],
-  ["#DD7E6B", "#EA9999", "#F9CB9C", "#FFE599", "#B6D7A8", "#A2C4C9", "#A4C2F4", "#9FC5E8", "#B4A7D6", "#D5A6BD"],
-  ["#CC4125", "#E06666", "#F6B26B", "#FFD966", "#93C47D", "#76A5AF", "#6D9EEB", "#6FA8DC", "#8E7CC3", "#C27BA0"],
-  ["#A61C00", "#CC0000", "#E69138", "#F1C232", "#6AA84F", "#45818E", "#3C78D8", "#3D85C6", "#674EA7", "#A64D79"],
-  ["#85200C", "#990000", "#B45F06", "#BF9000", "#38761D", "#134F5C", "#1155CC", "#0B5394", "#351C75", "#741B47"],
-  ["#5B0F00", "#660000", "#783F04", "#7F6000", "#274E13", "#0C343D", "#1C4587", "#073763", "#20124D", "#4C1130"],
+  [
+    "#000000",
+    "#434343",
+    "#666666",
+    "#999999",
+    "#B7B7B7",
+    "#CCCCCC",
+    "#D9D9D9",
+    "#EFEFEF",
+    "#F3F3F3",
+    "#FFFFFF",
+  ],
+  [
+    "#980000",
+    "#FF0000",
+    "#FF9900",
+    "#FFFF00",
+    "#00FF00",
+    "#00FFFF",
+    "#4A86E8",
+    "#0000FF",
+    "#9900FF",
+    "#FF00FF",
+  ],
+  [
+    "#E6B8AF",
+    "#F4CCCC",
+    "#FCE5CD",
+    "#FFF2CC",
+    "#D9EAD3",
+    "#D0E0E3",
+    "#C9DAF8",
+    "#CFE2F3",
+    "#D9D2E9",
+    "#EAD1DC",
+  ],
+  [
+    "#DD7E6B",
+    "#EA9999",
+    "#F9CB9C",
+    "#FFE599",
+    "#B6D7A8",
+    "#A2C4C9",
+    "#A4C2F4",
+    "#9FC5E8",
+    "#B4A7D6",
+    "#D5A6BD",
+  ],
+  [
+    "#CC4125",
+    "#E06666",
+    "#F6B26B",
+    "#FFD966",
+    "#93C47D",
+    "#76A5AF",
+    "#6D9EEB",
+    "#6FA8DC",
+    "#8E7CC3",
+    "#C27BA0",
+  ],
+  [
+    "#A61C00",
+    "#CC0000",
+    "#E69138",
+    "#F1C232",
+    "#6AA84F",
+    "#45818E",
+    "#3C78D8",
+    "#3D85C6",
+    "#674EA7",
+    "#A64D79",
+  ],
+  [
+    "#85200C",
+    "#990000",
+    "#B45F06",
+    "#BF9000",
+    "#38761D",
+    "#134F5C",
+    "#1155CC",
+    "#0B5394",
+    "#351C75",
+    "#741B47",
+  ],
+  [
+    "#5B0F00",
+    "#660000",
+    "#783F04",
+    "#7F6000",
+    "#274E13",
+    "#0C343D",
+    "#1C4587",
+    "#073763",
+    "#20124D",
+    "#4C1130",
+  ],
 ];
 const textColors = colorPalette.flat();
 const highlightColors = textColors;
@@ -188,12 +278,8 @@ function NoteEditor({ note, onBack, onSave, onDelete }) {
   useEffect(() => {
     if (!contentRef.current) return;
     const initialContent = note.content ?? "";
-    const escapedContent = initialContent
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/\n/g, "<br>");
-    contentRef.current.innerHTML = sanitizeEditorHtml(escapedContent);
+    contentRef.current.innerHTML = sanitizeEditorHtml(initialContent);
+
     const initialHtml = contentRef.current.innerHTML;
     setContent(initialHtml);
     historyRef.current = { past: [], future: [], lastHtml: initialHtml };
@@ -281,9 +367,8 @@ function NoteEditor({ note, onBack, onSave, onDelete }) {
     const currentHtml = sanitizeEditorHtml(contentRef.current.innerHTML);
     if (currentHtml !== historyRef.current.lastHtml) {
       const history = historyRef.current;
-      const snapshot = history.lastHtml === previousHtml
-        ? previousHtml
-        : history.lastHtml;
+      const snapshot =
+        history.lastHtml === previousHtml ? previousHtml : history.lastHtml;
       history.past.push(snapshot);
       history.future = [];
       history.lastHtml = currentHtml;
@@ -339,65 +424,26 @@ function NoteEditor({ note, onBack, onSave, onDelete }) {
 
   function applyInlineFormat(tagName, command) {
     const editor = contentRef.current;
-    const selection = window.getSelection();
-    if (!editor || !selection) return;
+    if (!editor) return;
 
+    editor.focus();
     restoreSelection();
-    const range = selection.rangeCount ? selection.getRangeAt(0) : null;
-    if (!range || !editor.contains(range.commonAncestorContainer)) return;
 
-    if (range.collapsed) {
-      const previousHtml = historyRef.current.lastHtml;
-      document.execCommand(command, false);
-      updateActiveFormats();
-      commitEditorChange(previousHtml);
+    const selection = window.getSelection();
+
+    if (
+      !selection ||
+      !selection.rangeCount ||
+      !editor.contains(selection.getRangeAt(0).commonAncestorContainer)
+    ) {
       return;
     }
 
     const previousHtml = historyRef.current.lastHtml;
-    const fragment = range.extractContents();
-    const textNodes = [];
-    const walker = document.createTreeWalker(fragment, NodeFilter.SHOW_TEXT);
-    while (walker.nextNode()) {
-      if (walker.currentNode.textContent.trim()) {
-        textNodes.push(walker.currentNode);
-      }
-    }
 
-    const isFullyFormatted =
-      textNodes.length > 0 &&
-      textNodes.every((textNode) => {
-        let parent = textNode.parentElement;
-        while (parent && parent !== fragment) {
-          if (parent.tagName.toLowerCase() === tagName) return true;
-          parent = parent.parentElement;
-        }
-        return false;
-      });
+    // Toggle the selected formatting on or off.
+    document.execCommand(command, false, null);
 
-    function normalizeFragment(node) {
-      if (node.nodeType !== Node.ELEMENT_NODE) return;
-      Array.from(node.children).forEach(normalizeFragment);
-      if (node.tagName.toLowerCase() === tagName) {
-        const parent = node.parentNode;
-        while (node.firstChild) parent.insertBefore(node.firstChild, node);
-        parent.removeChild(node);
-      }
-    }
-
-    Array.from(fragment.children).forEach(normalizeFragment);
-
-    const insertedNode = document.createElement(
-      isFullyFormatted ? "span" : tagName,
-    );
-    insertedNode.append(fragment);
-
-    range.insertNode(insertedNode);
-    selection.removeAllRanges();
-    const updatedRange = document.createRange();
-    updatedRange.selectNodeContents(insertedNode);
-    selection.addRange(updatedRange);
-    savedSelectionRef.current = updatedRange.cloneRange();
     commitEditorChange(previousHtml);
     updateActiveFormats();
   }
@@ -439,10 +485,7 @@ function NoteEditor({ note, onBack, onSave, onDelete }) {
   }
 
   function applyHighlight(color) {
-    applyStyleToSelection(
-      "background-color",
-      color || EDITOR_SURFACE_COLOR,
-    );
+    applyStyleToSelection("background-color", color || EDITOR_SURFACE_COLOR);
   }
 
   function applyStyleToSelection(property, value) {
@@ -524,7 +567,9 @@ function NoteEditor({ note, onBack, onSave, onDelete }) {
 
   function handleSave() {
     if (!title.trim()) return;
-    const safeContent = sanitizeEditorHtml(contentRef.current?.innerHTML ?? content);
+    const safeContent = sanitizeEditorHtml(
+      contentRef.current?.innerHTML ?? content,
+    );
     onSave({
       ...note,
       title: title.trim(),
@@ -535,10 +580,9 @@ function NoteEditor({ note, onBack, onSave, onDelete }) {
   }
 
   const plainText =
-    new DOMParser().parseFromString(content, "text/html").body.textContent ?? "";
-  const wordCount = plainText.trim()
-    ? plainText.trim().split(/\s+/).length
-    : 0;
+    new DOMParser().parseFromString(content, "text/html").body.textContent ??
+    "";
+  const wordCount = plainText.trim() ? plainText.trim().split(/\s+/).length : 0;
 
   return (
     <div className="flex min-h-screen min-w-0 flex-1 flex-col text-[#280A08]">
@@ -635,7 +679,10 @@ function NoteEditor({ note, onBack, onSave, onDelete }) {
                 <Icon aria-hidden="true" className="h-4 w-4" />
               </button>
             ))}
-            <span aria-hidden="true" className="mx-1 h-5 w-px bg-[#280A08]/10" />
+            <span
+              aria-hidden="true"
+              className="mx-1 h-5 w-px bg-[#280A08]/10"
+            />
             {[
               { label: "Bold", icon: FiBold, format: "bold" },
               { label: "Italic", icon: FiItalic, format: "italic" },

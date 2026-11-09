@@ -10,8 +10,9 @@ function getGreeting() {
   return "Good Evening";
 }
 
-function Navbar({ searchQuery, onSearchChange, onSearch }) {
-  const [userName] = useState(getActiveUserName);
+function Navbar({ searchQuery, onSearchChange, onSearch, currentUser }) {
+  const userName =
+    currentUser?.name?.trim() || currentUser?.email?.split("@")[0] || "User";
   const searchInputRef = useRef(null);
   const initial = userName.trim().charAt(0).toUpperCase() || "?";
 

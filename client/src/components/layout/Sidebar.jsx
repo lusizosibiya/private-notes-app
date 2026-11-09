@@ -45,7 +45,9 @@ function Sidebar({ activeItem = "My Notes", onNavigate }) {
         </a>
         <button
           type="button"
-          aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-label={
+            isMenuOpen ? "Close navigation menu" : "Open navigation menu"
+          }
           aria-expanded={isMenuOpen}
           aria-controls="sidebar-navigation"
           onClick={() => setIsMenuOpen((open) => !open)}
@@ -73,27 +75,31 @@ function Sidebar({ activeItem = "My Notes", onNavigate }) {
               label === "Archived";
 
             return (
-            <li
-              key={label}
-              className={`shrink-0 md:w-full ${separated ? "md:mt-4 md:border-t md:border-[#E9E8E8]/15 md:pt-4" : ""}`}
-            >
-              <a
-                href={canNavigate ? undefined : href}
-                onClick={canNavigate ? (event) => {
-                  event.preventDefault();
-                  navigate(label);
-                } : undefined}
-                aria-current={active ? "page" : undefined}
-                className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition-colors ${
-                  active
-                    ? "bg-[#8E3435]/70"
-                    : "hover:bg-[#8E3435]/45 focus-visible:bg-[#8E3435]/45"
-                }`}
+              <li
+                key={label}
+                className={`shrink-0 md:w-full ${separated ? "md:mt-4 md:border-t md:border-[#E9E8E8]/15 md:pt-4" : ""}`}
               >
-                <Icon aria-hidden="true" className="h-5 w-5 shrink-0" />
-                <span className="whitespace-nowrap">{label}</span>
-              </a>
-            </li>
+                <a
+                  href={canNavigate ? undefined : href}
+                  onClick={
+                    canNavigate
+                      ? (event) => {
+                          event.preventDefault();
+                          navigate(label);
+                        }
+                      : undefined
+                  }
+                  aria-current={active ? "page" : undefined}
+                  className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition-colors ${
+                    active
+                      ? "bg-[#8E3435]/70"
+                      : "hover:bg-[#8E3435]/45 focus-visible:bg-[#8E3435]/45"
+                  }`}
+                >
+                  <Icon aria-hidden="true" className="h-5 w-5 shrink-0" />
+                  <span className="whitespace-nowrap">{label}</span>
+                </a>
+              </li>
             );
           })}
         </ul>

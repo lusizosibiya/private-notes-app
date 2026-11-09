@@ -48,7 +48,9 @@ function NoteCard({
         }
       }}
       className={`relative rounded-2xl border border-[#280A08]/5 bg-[#E4E1E1] p-5 text-[#280A08] shadow-sm transition-shadow hover:shadow-md sm:p-6 ${
-        onClick ? "cursor-pointer focus-visible:outline-2 focus-visible:outline-[#652423]" : ""
+        onClick
+          ? "cursor-pointer focus-visible:outline-2 focus-visible:outline-[#652423]"
+          : ""
       } ${
         listView
           ? "grid grid-cols-1 items-center gap-3 sm:grid-cols-[minmax(10rem,0.8fr)_minmax(0,2fr)_auto]"
@@ -131,7 +133,9 @@ function NoteCard({
           listView ? "sm:justify-end" : "mt-5"
         }`}
       >
-        <span className={`rounded-md px-2.5 py-1 text-xs font-medium ${categoryStyle}`}>
+        <span
+          className={`rounded-md px-2.5 py-1 text-xs font-medium ${categoryStyle}`}
+        >
           {category}
         </span>
         <time className="inline-flex items-center gap-1.5 text-xs text-[#280A08]/75 sm:text-sm">

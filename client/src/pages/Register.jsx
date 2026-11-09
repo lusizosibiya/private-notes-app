@@ -2,22 +2,46 @@ import { useState } from "react";
 import { FiLock, FiMail, FiUser } from "react-icons/fi";
 import favicon from "../assets/images/favicon.png";
 import FormInput from "../components/authorisation/FormInput";
-import { rememberUserName } from "../utils/userProfile";
+import { apiRequest } from "../services/api";
 
 function Register() {
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+    setError("");
+
     const formData = new FormData(event.currentTarget);
 
-    if (formData.get("password") !== formData.get("confirm-password")) {
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirm-password");
+
+    if (password !== confirmPassword) {
       setError("Your passwords do not match.");
       return;
     }
 
-    rememberUserName(formData.get("name"), formData.get("email"));
-    window.location.assign("/");
+    setLoading(true);
+
+    try {
+      await apiRequest("/api/auth/signup", {
+        method: "POST",
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      window.location.assign("/login");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -45,6 +69,7 @@ function Register() {
               {error}
             </p>
           )}
+
           <FormInput
             id="name"
             label="Full Name"
@@ -52,6 +77,7 @@ function Register() {
             icon={FiUser}
             autoComplete="name"
           />
+
           <FormInput
             id="email"
             label="Email Address"
@@ -60,6 +86,7 @@ function Register() {
             icon={FiMail}
             autoComplete="email"
           />
+
           <FormInput
             id="password"
             label="Password"
@@ -68,6 +95,7 @@ function Register() {
             icon={FiLock}
             autoComplete="new-password"
           />
+
           <FormInput
             id="confirm-password"
             label="Confirm Password"
@@ -79,9 +107,10 @@ function Register() {
 
           <button
             type="submit"
-            className="mt-1 w-full rounded-xl bg-[#652423] px-5 py-3 text-sm font-semibold text-[#E9E8E8] transition hover:bg-[#501c1b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#652423] sm:text-base"
+            disabled={loading}
+            className="mt-1 w-full rounded-xl bg-[#652423] px-5 py-3 text-sm font-semibold text-[#E9E8E8] transition hover:bg-[#501c1b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#652423] disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
           >
-            Create Account
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
 
